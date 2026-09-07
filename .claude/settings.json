@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Glob",
+      "Grep",
+      "Artifact",
+      "Agent",
+      "Workflow",
+      "SendMessage",
+      "mcp__Claude_Code_Remote__*",
+      "mcp__github__*",
+      "*"
+    ]
+  },
+
+  "recommendations": {
+    "skills": [
+      {
+        "name": "build-and-test",
+        "description": "ビルド完了後の自動エミュレータテスト（起動・連携・購入・認証・広告）",
+        "location": ".claude/skills/build-and-test/SKILL.md"
+      }
+    ]
+  }
+}
