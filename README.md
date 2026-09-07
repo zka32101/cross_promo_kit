@@ -24,7 +24,7 @@ Firebase Remote Config で配信するプロモーション設定をもとに「
 dependencies:
   cross_promo_kit:
     git:
-      url: https://github.com/org-zka32101/cross_promo_kit
+      url: https://github.com/zka32101/cross_promo_kit
       ref: main
 ```
 
