@@ -17,7 +17,6 @@
       "*"
     ]
   },
-
   "recommendations": {
     "skills": [
       {
@@ -26,5 +25,12 @@
         "location": ".claude/skills/build-and-test/SKILL.md"
       }
     ]
+  },
+  "hooks": {
+    "on_build_complete": {
+      "description": "ビルド完了後の自動テスト実行",
+      "script": ".claude/hooks/on-build-complete.sh",
+      "trigger": "post-build"
+    }
   }
 }
