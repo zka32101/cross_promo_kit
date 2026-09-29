@@ -40,3 +40,16 @@ lib/
   widgets/
     cross_promo_section.dart    # 紹介UIウィジェット
 ```
+
+## 子ども向けアプリでの注意
+
+外部ストアへのリンクの前には保護者ゲートが必須です。shared_core の `requireParentalGate` を渡してください。
+
+```dart
+CrossPromoSection(
+  currentAppId: 'kokugo-kore',
+  beforeOpenStore: (context) => requireParentalGate(context),
+)
+```
+
+方針全体は shared_core の `docs/DEV_PLAYBOOK.md` を参照してください。

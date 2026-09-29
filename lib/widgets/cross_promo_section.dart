@@ -20,6 +20,7 @@ class CrossPromoSection extends StatelessWidget {
     this.currentCategory,
     this.title = '他のアプリもチェック！',
     this.maxApps = 6,
+    this.beforeOpenStore,
     @visibleForTesting this.appsOverride,
   });
 
@@ -30,6 +31,14 @@ class CrossPromoSection extends StatelessWidget {
 
   final String title;
   final int maxApps;
+
+  /// ストアを開く直前に呼ばれるゲート。`false` を返すと開かない。
+  ///
+  /// 子ども向けアプリでは外部リンクの前に保護者ゲートが必須
+  /// （App Store ガイドライン 1.3 / Google Play ファミリーポリシー）なので、
+  /// shared_core の `requireParentalGate` を渡すこと:
+  /// `beforeOpenStore: (context) => requireParentalGate(context)`
+  final Future<bool> Function(BuildContext context)? beforeOpenStore;
 
   /// テスト専用: Remote Config を経由せず表示データを直接渡す。本番コードでは使わない。
   @visibleForTesting
@@ -61,7 +70,10 @@ class CrossPromoSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: shown.length,
             separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (context, i) => _PromotedAppCard(app: shown[i]),
+            itemBuilder: (context, i) => _PromotedAppCard(
+              app: shown[i],
+              beforeOpenStore: beforeOpenStore,
+            ),
           ),
         ),
       ],
@@ -70,13 +82,16 @@ class CrossPromoSection extends StatelessWidget {
 }
 
 class _PromotedAppCard extends StatelessWidget {
-  const _PromotedAppCard({required this.app});
+  const _PromotedAppCard({required this.app, this.beforeOpenStore});
 
   final PromotedApp app;
+  final Future<bool> Function(BuildContext context)? beforeOpenStore;
 
-  Future<void> _open() async {
+  Future<void> _open(BuildContext context) async {
     final uri = Uri.tryParse(app.storeUrl);
     if (uri == null) return;
+    final gate = beforeOpenStore;
+    if (gate != null && !await gate(context)) return;
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
@@ -88,7 +103,7 @@ class _PromotedAppCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: _open,
+          onTap: () => _open(context),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
