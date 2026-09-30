@@ -7,6 +7,12 @@
 
 ---
 
+## Unreleased
+
+- `CrossPromoSection` に `beforeOpenStore` を追加。ストアを開く前に保護者ゲートを挟めるようにした
+  （子ども向けアプリでは必須: App Store ガイドライン 1.3 / Google Play ファミリーポリシー）。
+  未指定時の動作は従来どおり。
+
 ## [Unreleased]
 
 ## [0.1.0] - 2026-09-12
