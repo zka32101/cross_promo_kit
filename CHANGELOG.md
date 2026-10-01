@@ -7,13 +7,18 @@
 
 ---
 
-## Unreleased
+## [Unreleased]
 
+## [0.2.0] - 2026-10-01
+
+### Added
 - `CrossPromoSection` に `beforeOpenStore` を追加。ストアを開く前に保護者ゲートを挟めるようにした
   （子ども向けアプリでは必須: App Store ガイドライン 1.3 / Google Play ファミリーポリシー）。
   未指定時の動作は従来どおり。
 
-## [Unreleased]
+### Changed
+- 参照方法を `ref: main` からタグ固定（`ref: v0.2.0`）に変更（README）。
+  アプリ側は必ずタグで参照し、戻す場合は ref を前のタグ（例: v0.1.0）に戻す。
 
 ## [0.1.0] - 2026-09-12
 

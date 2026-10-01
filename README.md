@@ -20,12 +20,14 @@ Firebase Remote Config で配信するプロモーション設定をもとに「
 
 各アプリや `shared_core` の `pubspec.yaml` から git dependency として参照してください。
 
+必ずタグ（`ref: vX.Y.Z`）で固定してください。`main` は参照しません（戻せなくなるため）。
+
 ```yaml
 dependencies:
   cross_promo_kit:
     git:
       url: https://github.com/zka32101/cross_promo_kit
-      ref: main
+      ref: v0.2.0
 ```
 
 ## 構成
