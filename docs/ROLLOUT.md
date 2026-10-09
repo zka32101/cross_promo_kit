@@ -40,15 +40,18 @@
 - `kore1-6b58e` の Remote Config: 算数・国語の2件を投入済み。
 - 公開済み: 小学コレ！算数 / 小学コレ！国語。
 - 審査中のため未掲載（2026-10-09 時点で Play ページが 404 のため未公開と判断）: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
-- 導入済みアプリ: 算数 / 国語 / 社会（コード）。保護者ゲートは社会が導入済み、国語は PR 中、算数は未対応。
+- 導入済みアプリ: 算数 / 国語 / 社会（コード）。保護者ゲートは3アプリとも導入済み。
 
-## 既知のずれ（要対応）（2026-10-09 確認）
+## 既知のずれ（要対応）（2026-10-09 更新）
 
-解消済み:
-- 社会: `v0.2.0` でタグ固定済み。`beforeOpenStore`（保護者ゲート）も導入済み。
-- 国語: `v0.2.0` でタグ固定済み。保護者ゲートの追加と、ホーム画面の `currentAppId`（仮値 `com.example.kokugo_kore`）の本番値への修正を PR で対応中（kokugo-kore#100）。
+解消済み（3アプリとも `cross_promo_kit` は `v0.2.0` 固定、設定画面に保護者ゲート導入済み）:
+- 社会: 導入時点で対応済み。
+- 国語: kokugo-kore#100 で保護者ゲートの追加と、ホーム画面の `currentAppId`（仮値）の本番値への修正を反映。
+- 算数: sansu-kore#120 で `dependency_overrides` により v0.2.0 に固定し、保護者ゲート・`currentCategory`・`currentAppId` を設定。
 
-未解消（算数）:
-- `cross_promo_kit` をタグ固定で参照せず、リポジトリ内にコピー（`packages/cross_promo_kit`）して使っている。コピーには `beforeOpenStore` がない。
-- `currentAppId` が `'sansu-kore'`。Android の applicationId（`com.petitworksapps.shougakukore.sansu`）と、`kore1-6b58e` の掲載リストの `id` のどちらに合わせるか要確認。
-- 対応案: コピーを外して `v0.2.0` のタグ固定に切り替え、保護者ゲートを追加し、`currentAppId` を本番値にする。
+未解消:
+- 算数の `currentAppId`（`com.petitworksapps.shougakukore.sansu`）が、`kore1-6b58e` の掲載リストの `id` と一致するか未確認。不一致だと自アプリが自分のリストに出る。
+- 算数の `lib/main.dart` で `CrossPromoService.init()` がコメントアウトされたまま（「クラッシュループの可能性」の TODO）。原因を調べて有効化しないと、紹介カードに掲載アプリが出ない可能性がある。
+- 算数の `packages/cross_promo_kit` と `packages/shared_core` は、ルートの `pubspec.yaml` から参照されておらずビルドで使われていないように見える。削除の可否を判断する。
+- 国語の CI `Build iOS (unsigned)` が、`build_runner` 未実行（`*.g.dart` が `.gitignore` 対象）で PR 時に失敗する。紹介機能とは無関係。対応は見送り中。
+- 3アプリとも、実機での表示確認（紹介カード、自アプリの除外、保護者ゲート後のストア遷移）は未実施。
