@@ -40,9 +40,15 @@
 - `kore1-6b58e` の Remote Config: 算数・国語の2件を投入済み。
 - 公開済み: 小学コレ！算数 / 小学コレ！国語。
 - 審査中のため未掲載（2026-10-09 時点で Play ページが 404 のため未公開と判断）: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
-- 導入済みアプリ: 算数 / 国語 / 社会（コード）。
+- 導入済みアプリ: 算数 / 国語 / 社会（コード）。保護者ゲートは社会が導入済み、国語は PR 中、算数は未対応。
 
-## 既知のずれ（要対応）
+## 既知のずれ（要対応）（2026-10-09 確認）
 
-- 国語・社会は `ref: main` で参照している（上記のタグ固定ルールに反する）。
-- 算数・国語・社会は `beforeOpenStore`（保護者ゲート）を渡していない。小学コレは子ども向けなので、ストアへ飛ぶ前に保護者ゲートが必要。
+解消済み:
+- 社会: `v0.2.0` でタグ固定済み。`beforeOpenStore`（保護者ゲート）も導入済み。
+- 国語: `v0.2.0` でタグ固定済み。保護者ゲートの追加と、ホーム画面の `currentAppId`（仮値 `com.example.kokugo_kore`）の本番値への修正を PR で対応中（kokugo-kore#100）。
+
+未解消（算数）:
+- `cross_promo_kit` をタグ固定で参照せず、リポジトリ内にコピー（`packages/cross_promo_kit`）して使っている。コピーには `beforeOpenStore` がない。
+- `currentAppId` が `'sansu-kore'`。Android の applicationId（`com.petitworksapps.shougakukore.sansu`）と、`kore1-6b58e` の掲載リストの `id` のどちらに合わせるか要確認。
+- 対応案: コピーを外して `v0.2.0` のタグ固定に切り替え、保護者ゲートを追加し、`currentAppId` を本番値にする。
