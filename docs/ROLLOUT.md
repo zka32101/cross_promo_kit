@@ -51,7 +51,7 @@
 
 未解消:
 - 算数の `currentAppId`（`com.petitworksapps.shougakukore.sansu`）が、`kore1-6b58e` の掲載リストの `id` と一致するか未確認。不一致だと自アプリが自分のリストに出る。
-- 算数の `lib/main.dart` で `CrossPromoService.init()` がコメントアウトされたまま（「クラッシュループの可能性」の TODO）。原因を調べて有効化しないと、紹介カードに掲載アプリが出ない可能性がある。
+- 算数の `CrossPromoService.init()` は sansu-kore#121 で再有効化済み（`unawaited` で起動をブロックしない）。実機で、クラッシュループが再発しないことと、紹介カードが表示されることを確認する。
 - 算数の `packages/cross_promo_kit` と `packages/shared_core` は、ルートの `pubspec.yaml` から参照されておらずビルドで使われていないように見える。削除の可否を判断する。
 - 国語の CI `Build iOS (unsigned)` が、`build_runner` 未実行（`*.g.dart` が `.gitignore` 対象）で PR 時に失敗する。紹介機能とは無関係。対応は見送り中。
 - 3アプリとも、実機での表示確認（紹介カード、自アプリの除外、保護者ゲート後のストア遷移）は未実施。
