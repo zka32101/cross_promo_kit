@@ -35,11 +35,11 @@
 
 `id`（applicationId）/ `name` / `tagline` / `iconUrl`（Play の CDN など）/ `storeUrl` / `category`。公開を確認してから載せる（Play のページが 200 を返すこと）。
 
-## 現在の状況（2026-10-05）
+## 現在の状況（2026-10-09 確認）
 
 - `kore1-6b58e` の Remote Config: 算数・国語の2件を投入済み。
 - 公開済み: 小学コレ！算数 / 小学コレ！国語。
-- 審査中のため未掲載: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
+- 審査中のため未掲載（2026-10-09 時点で Play ページが 404 のため未公開と判断）: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
 - 導入済みアプリ: 算数 / 国語 / 社会（コード）。
 
 ## 既知のずれ（要対応）
