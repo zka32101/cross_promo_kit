@@ -9,6 +9,17 @@
 
 ## [Unreleased]
 
+### Added
+- `CrossPromoSection.isChildDirected`: `true` のとき `beforeOpenStore`（保護者ゲート）が無いとデバッグビルドの assert で落ちる。
+  子ども向けアプリでの渡し忘れを開発中に検知する。既定は `false`（従来どおり）。
+- `CrossPromoSection.onOpenStore`: ゲート通過後・ストアを開く直前に呼ばれる任意のフック（タップ計測用）。例外は握りつぶす。
+- デバッグビルドで、掲載リストが空でないのに `currentAppId` がどの `id` にも一致しないときに警告を出す。
+- `tools/cross_promo_list.py`（掲載リストの検証・Remote Config 投入用の値の生成）と `docs/cross_promo_apps.json`（掲載リストの正）。
+
+### Changed
+- `CrossPromoSection` は Remote Config の取得完了時に自動で再描画する。
+  アプリ側は `CrossPromoService.init()` を待たずに（`unawaited` で）呼んでも、取得後にカードが出る。
+
 ## [0.2.0] - 2026-10-01
 
 ### Added
