@@ -67,11 +67,11 @@
 - `dependency_overrides` は5アプリとも削除済み（国語#105 / 算数#123 / 社会#181 / プログラミング#171 / 道徳#69）。
   コミット済みの `pubspec.lock` が古い `shared_core` を指すアプリ（道徳・プログラミング）は、`flutter pub upgrade shared_core` で lock を更新してからマージした。
 - 5アプリとも設定画面に保護者ゲートと `isChildDirected: true` を導入済み。
+- 算数の未使用 `packages/`（`cross_promo_kit` / `shared_core`）は sansu-kore#124 で削除済み。
 - 算数の `CrossPromoService.init()` は sansu-kore#121 で再有効化済み（`unawaited` で起動をブロックしない）。
 
 未解消:
 - 算数の `currentAppId`（`com.petitworksapps.shougakukore.sansu`）が、`kore1-6b58e` の掲載リストの `id` と一致するか未確認。不一致だと自アプリが自分のリストに出る。
 - 実機での確認が未実施: 起動でクラッシュループが再発しないこと、紹介カードの表示、自アプリの除外、保護者ゲート後のストア遷移。
-- 算数の `packages/cross_promo_kit` と `packages/shared_core` は、ルートの `pubspec.yaml` から参照されておらずビルドで使われていないように見える。削除の可否を判断する。
 - 国語の CI `Build iOS (unsigned)` が失敗する（`build_runner` 未実行が原因とみられるが、今回のログでは未確認）。紹介機能とは無関係。対応は見送り中。
 - 「ゲームで学ぶ都道府県」の組み込みは保留中。
