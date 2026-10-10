@@ -60,16 +60,18 @@
 - 審査中のため未掲載（2026-10-09 時点で Play ページが 404 のため未公開と判断）: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
 - 導入済みアプリ: 算数 / 国語 / 社会（コード）。保護者ゲートは3アプリとも導入済み。
 
-## 既知のずれ（要対応）（2026-10-09 更新）
+## 既知のずれ（要対応）（2026-10-10 更新）
 
-解消済み（3アプリとも `cross_promo_kit` は `v0.2.0` 固定、設定画面に保護者ゲート導入済み）:
-- 社会: 導入時点で対応済み。
-- 国語: kokugo-kore#100 で保護者ゲートの追加と、ホーム画面の `currentAppId`（仮値）の本番値への修正を反映。
-- 算数: sansu-kore#120 で `dependency_overrides` により v0.2.0 に固定し、保護者ゲート・`currentCategory`・`currentAppId` を設定。
+解消済み:
+- 5アプリ（国語・算数・社会・プログラミング・道徳）の `cross_promo_kit` は `v0.3.0` 固定。`shared_core` も v0.3.0 を参照（shared_core#79）。
+- `dependency_overrides` は5アプリとも削除済み（国語#105 / 算数#123 / 社会#181 / プログラミング#171 / 道徳#69）。
+  コミット済みの `pubspec.lock` が古い `shared_core` を指すアプリ（道徳・プログラミング）は、`flutter pub upgrade shared_core` で lock を更新してからマージした。
+- 5アプリとも設定画面に保護者ゲートと `isChildDirected: true` を導入済み。
+- 算数の `CrossPromoService.init()` は sansu-kore#121 で再有効化済み（`unawaited` で起動をブロックしない）。
 
 未解消:
 - 算数の `currentAppId`（`com.petitworksapps.shougakukore.sansu`）が、`kore1-6b58e` の掲載リストの `id` と一致するか未確認。不一致だと自アプリが自分のリストに出る。
-- 算数の `CrossPromoService.init()` は sansu-kore#121 で再有効化済み（`unawaited` で起動をブロックしない）。実機で、クラッシュループが再発しないことと、紹介カードが表示されることを確認する。
+- 実機での確認が未実施: 起動でクラッシュループが再発しないこと、紹介カードの表示、自アプリの除外、保護者ゲート後のストア遷移。
 - 算数の `packages/cross_promo_kit` と `packages/shared_core` は、ルートの `pubspec.yaml` から参照されておらずビルドで使われていないように見える。削除の可否を判断する。
-- 国語の CI `Build iOS (unsigned)` が、`build_runner` 未実行（`*.g.dart` が `.gitignore` 対象）で PR 時に失敗する。紹介機能とは無関係。対応は見送り中。
-- 3アプリとも、実機での表示確認（紹介カード、自アプリの除外、保護者ゲート後のストア遷移）は未実施。
+- 国語の CI `Build iOS (unsigned)` が失敗する（`build_runner` 未実行が原因とみられるが、今回のログでは未確認）。紹介機能とは無関係。対応は見送り中。
+- 「ゲームで学ぶ都道府県」の組み込みは保留中。
