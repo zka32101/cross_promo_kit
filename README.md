@@ -30,6 +30,32 @@ dependencies:
       ref: v0.2.0
 ```
 
+## 子ども向けアプリでの使い方
+
+`isChildDirected: true` と `beforeOpenStore`（保護者ゲート）を必ずセットで渡してください。
+渡し忘れるとデバッグビルドで assert が落ちます。
+
+```dart
+CrossPromoSection(
+  currentAppId: '<本番の applicationId>',
+  currentCategory: '小学コレ',
+  isChildDirected: true,
+  beforeOpenStore: (context) => requireParentalGate(context),
+)
+```
+
+`CrossPromoService.init()` は `unawaited(CrossPromoService.init())` で起動をブロックせずに呼べます
+（取得完了後にカードが自動で表示されます）。
+
+## 掲載リストの管理
+
+掲載リストの正は `docs/cross_promo_apps.json` です。検証と投入手順は `docs/ROLLOUT.md` を参照してください。
+
+```
+python3 tools/cross_promo_list.py validate --check-urls
+python3 tools/cross_promo_list.py snippet
+```
+
 ## 構成
 
 ```

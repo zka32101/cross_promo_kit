@@ -20,9 +20,15 @@ class CrossPromoSection extends StatelessWidget {
     this.currentCategory,
     this.title = '他のアプリもチェック！',
     this.maxApps = 6,
+    this.isChildDirected = false,
     this.beforeOpenStore,
+    this.onOpenStore,
     @visibleForTesting this.appsOverride,
-  });
+  }) : assert(
+          !isChildDirected || beforeOpenStore != null,
+          'isChildDirected: true の場合は beforeOpenStore（保護者ゲート）が必須です。'
+          'beforeOpenStore: (context) => requireParentalGate(context) を渡してください。',
+        );
 
   final String currentAppId;
 
@@ -40,17 +46,38 @@ class CrossPromoSection extends StatelessWidget {
   /// `beforeOpenStore: (context) => requireParentalGate(context)`
   final Future<bool> Function(BuildContext context)? beforeOpenStore;
 
+  /// 子ども向けアプリなら true にする。true のとき [beforeOpenStore] が null だと
+  /// デバッグビルドの assert で落ちる（保護者ゲートの渡し忘れを開発中に検知するため）。
+  final bool isChildDirected;
+
+  /// ゲートを通過してストアを開く直前に呼ばれる（タップ計測などに使う任意のフック）。
+  /// 例外は握りつぶされるので、ここで失敗してもストアは開く。
+  /// 子ども向けアプリでは、収集する内容が各ストアの規約に反しないよう注意すること。
+  final void Function(PromotedApp app)? onOpenStore;
+
   /// テスト専用: Remote Config を経由せず表示データを直接渡す。本番コードでは使わない。
   @visibleForTesting
   final List<PromotedApp>? appsOverride;
 
   @override
   Widget build(BuildContext context) {
-    final apps = appsOverride ??
+    final override = appsOverride;
+    if (override != null) return _buildList(context, override);
+    // init() 完了（Remote Config 取得後）に自動で再描画する。
+    // アプリ側は init() を待たずに（unawaited で）呼んでも、取得後にカードが出る。
+    return ValueListenableBuilder<int>(
+      valueListenable: CrossPromoService.revision,
+      builder: (context, _, __) => _buildList(
+        context,
         CrossPromoService.getPromotedApps(
           currentAppId: currentAppId,
           currentCategory: currentCategory,
-        );
+        ),
+      ),
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<PromotedApp> apps) {
     if (apps.isEmpty) return const SizedBox.shrink();
 
     final shown = apps.take(maxApps).toList();
@@ -73,6 +100,7 @@ class CrossPromoSection extends StatelessWidget {
             itemBuilder: (context, i) => _PromotedAppCard(
               app: shown[i],
               beforeOpenStore: beforeOpenStore,
+              onOpenStore: onOpenStore,
             ),
           ),
         ),
@@ -82,16 +110,22 @@ class CrossPromoSection extends StatelessWidget {
 }
 
 class _PromotedAppCard extends StatelessWidget {
-  const _PromotedAppCard({required this.app, this.beforeOpenStore});
+  const _PromotedAppCard({required this.app, this.beforeOpenStore, this.onOpenStore});
 
   final PromotedApp app;
   final Future<bool> Function(BuildContext context)? beforeOpenStore;
+  final void Function(PromotedApp app)? onOpenStore;
 
   Future<void> _open(BuildContext context) async {
     final uri = Uri.tryParse(app.storeUrl);
     if (uri == null) return;
     final gate = beforeOpenStore;
     if (gate != null && !await gate(context)) return;
+    try {
+      onOpenStore?.call(app);
+    } catch (_) {
+      // 計測フックの失敗でストア遷移を止めない。
+    }
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 

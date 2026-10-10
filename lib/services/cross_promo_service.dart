@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/promoted_app.dart';
 
@@ -23,6 +24,12 @@ class CrossPromoService {
 
   static FirebaseRemoteConfig? _remoteConfig;
 
+  /// Remote Config の取得が完了するたびに増える。[CrossPromoSection] がこれを監視して
+  /// 自動で再描画する。アプリ側が直接使う必要はない。
+  static final ValueNotifier<int> revision = ValueNotifier<int>(0);
+
+  static final Set<String> _warnedIds = <String>{};
+
   /// アプリ起動時に一度呼ぶ。失敗しても例外を投げず、以降は空リストとして扱う。
   static Future<void> init() async {
     try {
@@ -36,6 +43,7 @@ class CrossPromoService {
       await rc.setDefaults(const {kCrossPromoRemoteConfigKey: '[]'});
       await rc.fetchAndActivate();
       _remoteConfig = rc;
+      revision.value++;
     } catch (_) {
       _remoteConfig = null;
     }
@@ -50,7 +58,36 @@ class CrossPromoService {
     String? currentCategory,
   }) {
     final raw = _remoteConfig?.getString(kCrossPromoRemoteConfigKey) ?? '[]';
+    assert(() {
+      _warnIfCurrentAppUnlisted(raw, currentAppId);
+      return true;
+    }());
     return parseApps(raw, currentAppId: currentAppId, currentCategory: currentCategory);
+  }
+
+  /// デバッグビルド専用。掲載リストが空でないのに、[currentAppId] がどの `id` にも
+  /// 一致しないときに警告する（仮の applicationId を渡している／リスト側の id が
+  /// 違う、というずれの検知用）。公開前のアプリは載っていなくて当然なので、
+  /// 警告のみで動作は変えない。同じ id につき1回だけ出す。
+  static void _warnIfCurrentAppUnlisted(String rawJson, String currentAppId) {
+    final normalizedCurrentId = _stripDebugSuffix(currentAppId);
+    if (_warnedIds.contains(normalizedCurrentId)) return;
+    try {
+      final decoded = jsonDecode(rawJson) as List<dynamic>;
+      if (decoded.isEmpty) return;
+      final listed = decoded
+          .cast<Map<String, dynamic>>()
+          .map((m) => m['id'] as String? ?? '')
+          .contains(normalizedCurrentId);
+      if (!listed) {
+        _warnedIds.add(normalizedCurrentId);
+        debugPrint(
+          '[cross_promo_kit] currentAppId "$normalizedCurrentId" が掲載リストの '
+          'どの id にも一致しません。applicationId とリストの id が合っているか、'
+          '公開前のアプリでなければ確認してください。',
+        );
+      }
+    } catch (_) {}
   }
 
   /// Remote Config の生JSON文字列から [PromotedApp] 一覧を組み立てる純粋関数。

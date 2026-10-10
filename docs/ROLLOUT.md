@@ -31,6 +31,24 @@
 5. `currentAppId` は **本番の applicationId** と完全一致させる（仮の値だと自分が自分のリストに出る）
 6. 実機で、紹介カードの表示と自アプリの除外、タップでストアが開くことを確認する
 
+## 掲載リストの管理と投入手順
+
+掲載リストの正は **`docs/cross_promo_apps.json`**（このリポジトリ）。Remote Config の値は必ずここから作る。
+プロジェクトごとの Remote Config（`kore1-6b58e` / アプリ個別のプロジェクト）には、同じ内容を投入する。
+
+1. `docs/cross_promo_apps.json` を編集する（公開を確認したアプリだけ）。
+2. 検証する: `python3 tools/cross_promo_list.py validate --check-urls`
+   - 必須項目、`id` の重複、デバッグサフィックス、Play の URL と `id` の一致、カテゴリの綴り、
+     `storeUrl` / `iconUrl` が HTTP 200 を返すかを確認する。
+3. 投入用の値を出す: `python3 tools/cross_promo_list.py snippet`
+4. **掲載アプリ・URL を確認してから**、各プロジェクトの Remote Config に同じ値を設定して公開する（方針の4）。
+   Firebase CLI で一括更新するときは `firebase remoteconfig:get -P <project>` で現行テンプレートを取得し、
+   `parameters` に出力された断片を足してから `firebase deploy --only remoteconfig`。
+   **テンプレートは全パラメータを上書きするので、必ず現行の取得結果に足す形にすること。**
+
+> 現在の本番の値（算数・国語の2件）は、まだこのファイルに反映していない。
+> コンソールの現行値を `docs/cross_promo_apps.json` に貼り、上の手順で検証してから運用を切り替える。
+
 ## 掲載リストに載せる項目
 
 `id`（applicationId）/ `name` / `tagline` / `iconUrl`（Play の CDN など）/ `storeUrl` / `category`。公開を確認してから載せる（Play のページが 200 を返すこと）。
