@@ -27,7 +27,7 @@ dependencies:
   cross_promo_kit:
     git:
       url: https://github.com/zka32101/cross_promo_kit
-      ref: v0.2.0
+      ref: v0.3.0
 ```
 
 ## 子ども向けアプリでの使い方

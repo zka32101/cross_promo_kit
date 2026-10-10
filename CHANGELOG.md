@@ -9,6 +9,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-10
+
 ### Added
 - `CrossPromoSection.isChildDirected`: `true` のとき `beforeOpenStore`（保護者ゲート）が無いとデバッグビルドの assert で落ちる。
   子ども向けアプリでの渡し忘れを開発中に検知する。既定は `false`（従来どおり）。
