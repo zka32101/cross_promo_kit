@@ -58,7 +58,7 @@
 - `kore1-6b58e` の Remote Config: 算数・国語の2件を投入済み。
 - 公開済み: 小学コレ！算数 / 小学コレ！国語。
 - 審査中のため未掲載（2026-10-09 時点で Play ページが 404 のため未公開と判断）: 社会（`com.yourwish.shougakukore.shakai2`）/ Card Rivals（`com.yourwish.cardrivals`）。公開後に追記。
-- 導入済みアプリ: 算数 / 国語 / 社会（コード）。保護者ゲートは3アプリとも導入済み。
+- 導入済みアプリ（`cross_promo_kit` v0.3.0、保護者ゲート導入済み）: 算数 / 国語 / 社会 / プログラミング / 道徳 / ゲームで学ぶ都道府県（geography_puzzle_king#46、アプリ側の既存ゲート `showParentGate` を使用）。
 
 ## 既知のずれ（要対応）（2026-10-10 更新）
 
@@ -74,4 +74,4 @@
 - 算数の `currentAppId`（`com.petitworksapps.shougakukore.sansu`）が、`kore1-6b58e` の掲載リストの `id` と一致するか未確認。不一致だと自アプリが自分のリストに出る。
 - 実機での確認が未実施: 起動でクラッシュループが再発しないこと、紹介カードの表示、自アプリの除外、保護者ゲート後のストア遷移。
 - 国語の CI `Build iOS (unsigned)` が失敗する（`build_runner` 未実行が原因とみられるが、今回のログでは未確認）。紹介機能とは無関係。対応は見送り中。
-- 「ゲームで学ぶ都道府県」の組み込みは保留中。
+- 「ゲームで学ぶ都道府県」は、他の小学コレと Firebase プロジェクトが異なる（`geography-puzzle-king-app` など。`kore1-6b58e` ではない）。そのプロジェクトの Remote Config にも `cross_promo_apps` を設定しないと、紹介セクションは表示されない。設定は掲載内容の確認後に行う（方針の4）。
