@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "com.yourwish.shougakukore.sansu",
+    "name": "小学コレ！算数",
+    "tagline": "小学生の計算・九九・分数ドリル",
+    "iconUrl": "https://play-lh.googleusercontent.com/TOtz_fIbgP8Un45F7YYiZK2W64BbQpRKHVPe_Dv3qU3GcxaedFleo48iPgwcTKT9OpUl67-apMxfO6vF9hDP=s256",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.sansu",
+    "category": "小学コレ"
+  },
+  {
+    "id": "com.yourwish.shougakukore.kokugo",
+    "name": "小学コレ！国語",
+    "tagline": "小学生の漢字・ことわざ・読解ドリル",
+    "iconUrl": "https://play-lh.googleusercontent.com/A_QF5I5yMa679lLo2aj1iHtJoamSWhY3GU5iRH7TmJH8UoywlBlW3PXA33-7DMZKny_LxDfM6zV1fj29blrG_w=s256",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.kokugo",
+    "category": "小学コレ"
+  },
+  {
+    "id": "com.yourwish.shougakukore.shakai2",
+    "name": "小学コレ！社会",
+    "tagline": "小学生の地理・歴史・都道府県クイズ",
+    "iconUrl": "https://play-lh.googleusercontent.com/LfdjrOk_XLoIFeU6ZYGTEep4LGfrogqLYpnydMp5SIimK74kp0YRSb0St3v6R5oLvoM5EbcARS_mBSDvUyc1_u0=s256",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.shakai2",
+    "category": "小学コレ"
+  },
+  {
+    "id": "com.yourwish.shougakukore.rika",
+    "name": "小学コレ！理科",
+    "tagline": "小学生の理科クイズ・実験ドリル",
+    "iconUrl": "https://play-lh.googleusercontent.com/IfP9mM_mb0e5zJZWjKexU8-iCkYq3jI2Lhg53P0VrxPcJjycUHTkVzWRx0SS7D_bxXgwbR4Czf5vQlqg_v2sLQ=s256",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.rika",
+    "category": "小学コレ"
+  },
+  {
+    "id": "com.yourwish.shougakukore.eigo",
+    "name": "小学コレ！英語",
+    "tagline": "小学生の英会話・英単語・リスニング",
+    "iconUrl": "https://play-lh.googleusercontent.com/Oq1Zarb0qUFAqgkd9ZiV0J_SfcXgmGu05DUUUpNDTl1DVj8Fso_tfGlKvsUgeq7bzxD0GlzFxWn-EDgyWFep=s256",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.eigo",
+    "category": "小学コレ"
+  }
+]
