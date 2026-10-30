@@ -21,6 +21,9 @@ from pathlib import Path
 DEFAULT_FILE = Path(__file__).resolve().parent.parent / "docs" / "cross_promo_apps.json"
 KEY = "cross_promo_apps"
 REQUIRED = ["id", "name", "tagline", "iconUrl", "storeUrl", "category"]
+# 公開予定のアプリは "upcoming": true を付けて載せておく。URL の確認は行わず（iconUrl は空でもよい）、
+# snippet（Remote Config 投入用の値）には含めない。公開して Play ページが 200 を返すようになったら
+# "upcoming" を外し、iconUrl を入れて validate --check-urls を通してから投入する。
 # docs/ROLLOUT.md の方針で決めたカテゴリ。増やすときはここと ROLLOUT.md を合わせて更新する。
 KNOWN_CATEGORIES = {"小学コレ", "うかラボ", "パズル・ゲーム"}
 PLAY_PREFIX = "https://play.google.com/store/apps/details?id="
@@ -41,8 +44,11 @@ def validate(apps, check_urls=False):
         if not isinstance(app, dict):
             errors.append(f"{where} オブジェクトではありません")
             continue
+        upcoming = app.get("upcoming") is True
         for key in REQUIRED:
             value = app.get(key)
+            if upcoming and key == "iconUrl":
+                continue
             if not isinstance(value, str) or not value.strip():
                 errors.append(f"{where} {key} が未設定または空です")
         app_id = app.get("id")
@@ -63,6 +69,9 @@ def validate(apps, check_urls=False):
         category = app.get("category")
         if isinstance(category, str) and category and category not in KNOWN_CATEGORIES:
             warnings.append(f"{where} 未知のカテゴリ: {category}（綴りを確認。新設なら ROLLOUT.md と KNOWN_CATEGORIES を更新）")
+        if upcoming:
+            warnings.append(f"{where} 公開予定（upcoming）のため URL の確認と Remote Config への投入は行いません")
+            continue
         if check_urls:
             for key in ("storeUrl", "iconUrl"):
                 url = app.get(key)
@@ -101,7 +110,11 @@ def cmd_snippet(args):
     if errors:
         print("検証エラーがあるため出力しません。先に validate を通してください。", file=sys.stderr)
         return 1
-    value = json.dumps(apps, ensure_ascii=False, separators=(",", ":"))
+    published = [a for a in apps if a.get("upcoming") is not True]
+    skipped = len(apps) - len(published)
+    if skipped:
+        print(f"# 公開予定（upcoming）の {skipped} 件は含めていません", file=sys.stderr)
+    value = json.dumps(published, ensure_ascii=False, separators=(",", ":"))
     print("# Remote Config に設定する値（コンソールの「値」にそのまま貼る）")
     print(value)
     print()
