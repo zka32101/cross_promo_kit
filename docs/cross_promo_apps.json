@@ -38,5 +38,23 @@
     "iconUrl": "https://play-lh.googleusercontent.com/Oq1Zarb0qUFAqgkd9ZiV0J_SfcXgmGu05DUUUpNDTl1DVj8Fso_tfGlKvsUgeq7bzxD0GlzFxWn-EDgyWFep=s256",
     "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.eigo",
     "category": "小学コレ"
+  },
+  {
+    "id": "com.yourwish.shougakukore.programming",
+    "name": "小学コレ！プログラミング",
+    "tagline": "コード探険でプログラミングを楽しく学ぼう",
+    "iconUrl": "",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.programming",
+    "category": "小学コレ",
+    "upcoming": true
+  },
+  {
+    "id": "com.yourwish.shougakukore.shinshin",
+    "name": "小学コレ！心身",
+    "tagline": "ストーリーで体験して、判断力を育てよう",
+    "iconUrl": "",
+    "storeUrl": "https://play.google.com/store/apps/details?id=com.yourwish.shougakukore.shinshin",
+    "category": "小学コレ",
+    "upcoming": true
   }
 ]

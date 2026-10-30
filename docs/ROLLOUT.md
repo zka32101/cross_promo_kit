@@ -53,11 +53,19 @@
 
 `id`（applicationId）/ `name` / `tagline` / `iconUrl`（Play の CDN など）/ `storeUrl` / `category`。公開を確認してから載せる（Play のページが 200 を返すこと）。
 
+## 公開予定のアプリ
+
+公開前のアプリは、`docs/cross_promo_apps.json` に `"upcoming": true` を付けて載せておく（`iconUrl` は空でよい）。
+`validate` は URL を確認せず警告だけを出し、`snippet` は含めない。Remote Config には入らないので、
+アプリには表示されない（公開前のストアリンクが子どもに出ることはない）。
+
+公開されたら: ① `"upcoming"` を外す ② `iconUrl` を入れる ③ `validate --check-urls` を通す ④ `snippet` で Remote Config に投入する。
+
 ## 現在の状況（2026-10-29 更新）
 
 - 掲載リスト(`docs/cross_promo_apps.json`)に小学コレの公開済み5本（算数・国語・社会・理科・英語）を反映。Remote Config への投入は内容確認後に実施。
 - 公開済みの実 ID は `com.yourwish.shougakukore.*`。算数・英語はリポジトリ内の applicationId と異なるため、`currentAppId` は Play の ID に合わせること。
-- プログラミング・心身は Play で未確認（404）のため未掲載。
+- プログラミング・心身は公開予定（`upcoming`）として掲載リストに登録済み。公開後に上の手順で投入する。
 
 ### （以下は 2026-10-09 時点の記録）
 
